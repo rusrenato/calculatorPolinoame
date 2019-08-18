@@ -1,3 +1,5 @@
+package model;
+
 public class Monom {
     private int coefficient;
     private int power;
@@ -20,7 +22,7 @@ public class Monom {
 
     @Override
     public String toString() {
-        return "Monom{" +
+        return "model.Monom{" +
                 "coefficient=" + coefficient +
                 ", power=" + power +
                 '}';

@@ -10,13 +10,12 @@ import java.util.List;
 
 public class PolynomialService {
 
-    public Polynomial inputToPolinom (String input) {
+    public Polynomial inputToPolynomialForm(String input) {
         Polynomial polynomial = new Polynomial();
         List<String> stringList = new LinkedList<>(Arrays.asList(input.split(" ")));
         List<String> signList = new ArrayList<>();
         int power;
 
-        System.out.println(stringList);
         for (String s : stringList) {
             if (s.matches("[+-]")) {
                 signList.add(s);
@@ -27,8 +26,7 @@ public class PolynomialService {
         for (int i = 0; i < signList.size(); i++) {
             stringList.set(i + 1, signList.get(i).concat(stringList.get(i + 1)));
         }
-        System.out.println(stringList);
-        if(!stringList.get(0).startsWith("-")){
+        if (!stringList.get(0).startsWith("-")) {
             stringList.set(0, "+".concat(stringList.get(0)));
         }
 
@@ -53,4 +51,43 @@ public class PolynomialService {
         }
         return polynomial;
     }
+
+    public Polynomial add(Polynomial p1, Polynomial p2) {
+        Polynomial rez = new Polynomial();
+        for (Monomial m1 : p1.getMonomialList()) {
+            for (Monomial m2 : p2.getMonomialList()) {
+                if (m1.getPower() == m2.getPower()) {
+                    rez.addMonomialToPolynomial(new Monomial(m1.getCoefficient() + m2.getCoefficient(), m1.getPower()));
+                }
+            }
+        }
+        return rez;
+    }
+
+    public Polynomial sub(Polynomial p1, Polynomial p2) {
+        Polynomial rez = new Polynomial();
+        for (Monomial m1 : p1.getMonomialList()) {
+            for (Monomial m2 : p2.getMonomialList()) {
+                if (m1.getPower() == m2.getPower()) {
+                    rez.addMonomialToPolynomial(new Monomial(m1.getCoefficient() - m2.getCoefficient(), m1.getPower()));
+                }
+            }
+        }
+        return rez;
+    }
+
+    public Polynomial multiple(Polynomial p1, Polynomial p2) {
+        Polynomial rez = new Polynomial();
+        for (Monomial m1 : p1.getMonomialList()) {
+            for (Monomial m2 : p2.getMonomialList()) {
+                rez.addMonomialToPolynomial(new Monomial(m1.getCoefficient() * m2.getCoefficient(), m1.getPower() * m2.getPower()));
+            }
+        }
+        for(Monomial monomial : rez.getMonomialList()) {
+
+        }
+        return rez;
+    }
+
+
 }

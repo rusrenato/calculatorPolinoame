@@ -18,6 +18,13 @@ public class Polynomial {
         monomialList.add(monomial);
     }
 
+    public int getPolynomialDegree() {
+        return monomialList.get(0).getPower();
+    }
+
+    public Polynomial(List<Monomial> monomialList) {
+        this.monomialList = monomialList;
+    }
 
     @Override
     public String toString() {
@@ -27,4 +34,17 @@ public class Polynomial {
        }
        return polynomialForm.substring(3);
     }
+
+    public String integrationSpecialRepresentation() {
+        String polynomialForm = "";
+        for(Monomial monomial : monomialList) {
+            if(monomial.getPower() > 1) {
+                polynomialForm = polynomialForm + " " + monomial + "/" + monomial.getPower();
+            } else {
+                polynomialForm = polynomialForm + " " + monomial;
+            }
+        }
+        return polynomialForm.substring(3) + " + C";
+    }
+
 }

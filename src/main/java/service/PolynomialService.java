@@ -3,10 +3,7 @@ package service;
 import model.Monomial;
 import model.Polynomial;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class PolynomialService {
 
@@ -77,16 +74,63 @@ public class PolynomialService {
     }
 
     public Polynomial multiple(Polynomial p1, Polynomial p2) {
+        TreeMap<Integer, Monomial> map = new TreeMap<>();
         Polynomial rez = new Polynomial();
         for (Monomial m1 : p1.getMonomialList()) {
             for (Monomial m2 : p2.getMonomialList()) {
-                rez.addMonomialToPolynomial(new Monomial(m1.getCoefficient() * m2.getCoefficient(), m1.getPower() * m2.getPower()));
+                int key = m1.getPower() + m2.getPower();
+                if (!map.containsKey(key)) {
+                    map.put(key, new Monomial(m1.getCoefficient() * m2.getCoefficient(), key));
+                } else {
+                    map.put(key, new Monomial(map.get(key).getCoefficient() + (m1.getCoefficient() * m2.getCoefficient()), key));
+                }
             }
         }
-        for(Monomial monomial : rez.getMonomialList()) {
+        NavigableMap navigableMap = map.descendingMap();
+        navigableMap.forEach((k, v) -> {
+            rez.addMonomialToPolynomial((Monomial) v);
+        });
+        return rez;
+    }
 
+    public Polynomial derivation(Polynomial p) {
+        Polynomial rez = new Polynomial();
+        for (Monomial m : p.getMonomialList()) {
+            if (m.getPower() > 0) {
+                rez.addMonomialToPolynomial(new Monomial(m.getCoefficient() * m.getPower(), m.getPower() - 1));
+            }
         }
         return rez;
+    }
+
+    public Polynomial integration(Polynomial p) {
+        Polynomial rez = new Polynomial();
+        for (Monomial m : p.getMonomialList()) {
+            rez.addMonomialToPolynomial(new Monomial(m.getCoefficient(), m.getPower() + 1));
+        }
+        return rez;
+    }
+
+    public Polynomial division(Polynomial p1, Polynomial p2) {
+        Polynomial rez = new Polynomial();
+        Monomial t = new Monomial();
+        Monomial q = new Monomial();
+        Polynomial r = new Polynomial(p1.getMonomialList());
+        System.out.println(r);
+
+        while(!r.getMonomialList().isEmpty() && (p1.getPolynomialDegree() > p2.getPolynomialDegree())){
+            t.setCoefficient(r.getMonomialList().get(0).getCoefficient() / p2.getMonomialList().get(0).getCoefficient());
+            t.setPower(r.getMonomialList().get(0).getPower() - p2.getMonomialList().get(0).getPower());
+            q.setCoefficient(q.getCoefficient() + t.getCoefficient());
+            q.setPower(t.getPower());
+            List<Monomial> monomialList = new ArrayList<>();
+            monomialList.add(t);
+            Polynomial polynomialT = new Polynomial(monomialList);
+            r = sub(r,polynomialT);
+        }
+        System.out.println(q);
+        System.out.println(r);
+        return null;
     }
 
 

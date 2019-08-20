@@ -38,9 +38,7 @@ public class Monomial {
         if (coefficient == 1) {
             coefToString = "";
         }
-
         if (coefficient != 0) {
-
             if (power > 1) {
                 //   returnedString = coefficient > 0 ? returnedString.concat("+ " + coefToString + "x^" + power) : returnedString.concat("- " + (coefficient * -1) + "x^" + power);
             } else if (power == 1) {
@@ -52,7 +50,6 @@ public class Monomial {
             }
             return coefficient > 0 ? returnedString.concat("+ " + coefToString + powerToString) : returnedString.concat("- " + (coefficient * -1) + powerToString);
         }
-
         return "";
     }
 }
